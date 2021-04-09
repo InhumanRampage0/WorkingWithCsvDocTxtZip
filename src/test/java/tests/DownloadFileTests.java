@@ -4,6 +4,7 @@ import com.codeborne.selenide.Config;
 import com.codeborne.selenide.Configuration;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
+import utils.Files;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,11 +23,14 @@ public class DownloadFileTests {
     void selenideDownloadReadmeTest() throws IOException {
         Configuration.downloadsFolder ="downloads";
     open ("https://github.com/InhumanRampage0/learnHome/blob/master/ReadMe.md");
+
     File downloadedFile = $("#raw-url").download();
-    String fileContent = FileUtils.readFileToString(downloadedFile, StandardCharsets.UTF_8);
+    String fileContent = Files.readTextFromFile (downloadedFile);
     //assertTrue(fileContent.contains("Проверка mb"));
+
     assertThat(fileContent, containsString("Проверка md"));
     System.out.println(fileContent);
+    FileUtils.deleteDirectory(new File("downloads"));
     }
 
 }
